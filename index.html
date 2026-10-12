@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แบบสำรวจแนวคิดทางการเมือง 204 ข้อ (v2.2)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1b365d;
+      --primary-hover: #132744;
+      --accent: #2563eb;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.05);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans Thai', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    header h1 { font-size: 1.5rem; color: var(--primary); margin-bottom: 4px; }
+    header p { font-size: 0.9rem; color: var(--text-muted); }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+    }
+
+    /* Intro Screen */
+    .intro-content h2 { font-size: 1.25rem; margin-bottom: 12px; color: var(--primary); }
+    .intro-content p { margin-bottom: 12px; font-size: 0.95rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: #fff;
+      background-color: var(--primary);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      width: 100%;
+      text-decoration: none;
+    }
+    .btn:hover { background-color: var(--primary-hover); }
+    .btn:active { transform: scale(0.98); }
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #0f172a;
+    }
+    .btn-secondary:hover { background-color: #cbd5e1; }
+
+    /* Question Screen */
+    .progress-bar-bg {
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .cat-badge {
+      background: #eff6ff;
+      color: var(--accent);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 0.8rem;
+    }
+    .question-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      text-align: center;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option-btn {
+      min-height: 48px;
+      padding: 12px 16px;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      text-align: center;
+      width: 100%;
+    }
+    .option-btn:hover { opacity: 0.9; }
+    .option-btn:active { transform: scale(0.99); }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    /* Result Screen */
+    .result-section { margin-bottom: 32px; }
+    .section-title {
+      font-size: 1.2rem;
+      color: var(--primary);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+    
+    .match-card {
+      background: linear-gradient(135deg, #1b365d 0%, #2563eb 100%);
+      color: #fff;
+      padding: 24px;
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+    }
+    .match-card h3 { font-size: 1.5rem; margin-bottom: 4px; }
+    .match-card .sub { font-size: 1rem; opacity: 0.9; margin-bottom: 12px; font-weight: 300; }
+    .match-card p { font-size: 0.95rem; opacity: 0.95; line-height: 1.5; }
+    .next-matches {
+      background: #f1f5f9;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    /* Compass Grid */
+    .compass-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .compass-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .compass-box h4 { font-size: 0.95rem; margin-bottom: 8px; color: var(--primary); }
+    .compass-canvas-container {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 0 auto;
+    }
+    canvas { width: 100%; height: 100%; }
+
+    /* Bars Grid */
+    .bar-item {
+      margin-bottom: 12px;
+    }
+    .bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .bar-track {
+      height: 18px;
+      background: #e2e8f0;
+      border-radius: 9px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+    }
+    .bar-fill-left { background: #3b82f6; height: 100%; transition: width 0.5s ease; }
+    .bar-fill-right { background: #ef4444; height: 100%; transition: width 0.5s ease; }
+
+    /* Heatmap */
+    .heatmap-container {
+      position: relative;
+      width: 100%;
+      max-width: 450px;
+      margin: 0 auto;
+      aspect-ratio: 1;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .action-buttons .btn { flex: 1; min-width: 160px; }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.9);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: none;
+      z-index: 1000;
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      header, .action-buttons, .nav-buttons, .btn { display: none !important; }
+      .card { box-shadow: none; border: none; padding: 0; }
+      .compass-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>แบบสำรวจแนวคิดทางการเมือง</h1>
+    <p>เวอร์ชัน 2.2 (204 ข้อ • 10 มิติ • 22 แกนวัดผล)</p>
+  </header>
+
+  <div id="app">
+    <!-- View 1: Intro -->
+    <div id="intro-view" class="card intro-content">
+      <h2>ยินดีต้อนรับสู่แบบสำรวจ 10Groups</h2>
+      <p>แบบสำรวจนี้จะวัดผลทัศนคติทางการเมือง สังคม เศรษฐกิจ กฎหมาย และปรัชญาการเมืองของคุณใน 10 มิติแบบละเอียด</p>
+      <p>• คำถามทั้งหมด: <strong>204 ข้อ</strong> (ประมาณ 20-30 นาที)<br>
+         • มาตรวัด 7 ระดับ จาก "เห็นด้วยอย่างยิ่ง" ถึง "ไม่เห็นด้วยอย่างยิ่ง"<br>
+         • ระบบบันทึกความคืบหน้าอัตโนมัติ (สามารถปิดหน้าเว็บแล้วกลับมาทำต่อได้)</p>
+      <div style="margin-top: 20px;">
+        <button id="start-btn" class="btn">เริ่มทำแบบสำรวจ</button>
+        <button id="resume-btn" class="btn btn-secondary" style="margin-top: 10px; display: none;">ทำต่อจากที่บันทึกไว้</button>
+      </div>
+    </div>
+
+    <!-- View 2: Questions -->
+    <div id="question-view" class="card" style="display: none;">
+      <div class="progress-bar-bg">
+        <div id="progress-fill" class="progress-bar-fill"></div>
+      </div>
+      <div class="question-header">
+        <span id="q-number">คำถามที่ 1 จาก 204</span>
+        <span id="cat-badge" class="cat-badge">หมวดที่ 1</span>
+      </div>
+      <div id="q-text" class="question-text">ข้อความคำถามจะปรากฏที่นี่</div>
+      <div id="options-container" class="options-grid"></div>
+      <div class="nav-buttons">
+        <button id="prev-btn" class="btn btn-secondary" style="flex: 1;" disabled>ย้อนกลับ</button>
+      </div>
+    </div>
+
+    <!-- View 3: Results -->
+    <div id="result-view" style="display: none;">
+      <!-- Closest Match -->
+      <div class="card">
+        <div class="section-title">1. อุดมการณ์ทางการเมืองที่ใกล้เคียงที่สุด</div>
+        <div class="match-card">
+          <h3 id="match-name-th">-</h3>
+          <div id="match-name-en" class="sub">-</div>
+          <p id="match-blurb">-</p>
+        </div>
+        <div id="next-matches" class="next-matches">
+          <strong>อันดับถัดไป:</strong> <span id="next-matches-text">-</span>
+        </div>
+      </div>
+
+      <!-- 10 Compasses -->
+      <div class="card">
+        <div class="section-title">2. กราฟพิกัดเข็มทิศทางการเมือง 10 มิติ</div>
+        <div id="compasses-container" class="compass-grid"></div>
+      </div>
+
+      <!-- 22 Axis Bars -->
+      <div class="card">
+        <div class="section-title">3. สเปกตรัมทัศนคติ 22 แกน</div>
+        <div id="bars-container"></div>
+      </div>
+
+      <!-- Heatmap -->
+      <div class="card">
+        <div class="section-title">4. แผนที่ความร้อนตำแหน่งอุดมการณ์ (Heatmap)</div>
+        <div class="heatmap-container">
+          <canvas id="heatmap-canvas" width="450" height="450"></canvas>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="card action-buttons">
+        <button id="share-btn" class="btn">คัดลอกลิงก์แชร์ผลลัพธ์</button>
+        <button id="print-btn" class="btn btn-secondary">พิมพ์ / พิมพ์เป็น PDF</button>
+        <button id="retake-btn" class="btn btn-secondary">ทำแบบสำรวจใหม่</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast">คัดลอกลิงก์เรียบร้อยแล้ว!</div>
+
+<script>
+// embedded DATA object from questions.json v2.2
+const DATA = {
+  "meta": {
+    "version": "2.2",
+    "scale": [
+      { "label_th": "เห็นด้วยอย่างยิ่ง", "value": 3, "bg": "#1B5E20", "fg": "#FFFFFF" },
+      { "label_th": "เห็นด้วย", "value": 2, "bg": "#4CAF50", "fg": "#FFFFFF" },
+      { "label_th": "เห็นด้วยบางส่วน", "value": 1, "bg": "#66CDAA", "fg": "#111111" },
+      { "label_th": "เป็นกลาง / ไม่แน่ใจ / สองจิตสองใจ", "value": 0, "bg": "#B0B0B0", "fg": "#111111" },
+      { "label_th": "ไม่เห็นด้วยบางส่วน", "value": -1, "bg": "#F5B7B1", "fg": "#111111" },
+      { "label_th": "ไม่เห็นด้วย", "value": -2, "bg": "#F44336", "fg": "#FFFFFF" },
+      { "label_th": "ไม่เห็นด้วยอย่างยิ่ง", "value": -3, "bg": "#B71C1C", "fg": "#FFFFFF" }
+    ]
+  },
+  "categories": [
+    { "index": 1, "name_th": "ด้านเศรษฐกิจ" },
+    { "index": 2, "name_th": "ด้านรัฐและการปกครอง" },
+    { "index": 3, "name_th": "ด้านการต่างประเทศ" },
+    { "index": 4, "name_th": "ด้านสังคมและประเพณี" },
+    { "index": 5, "name_th": "ด้านเทคโนโลยีและอนาคต" },
+    { "index": 6, "name_th": "ด้านกฎหมายและยุติธรรม" },
+    { "index": 7, "name_th": "ด้านวัฒนธรรมและโครงสร้างสังคม" },
+    { "index": 8, "name_th": "ด้านกระบวนการเปลี่ยนแปลง" },
+    { "index": 9, "name_th": "ด้านการเมืองและการมีส่วนร่วม" },
+    { "index": 10, "name_th": "ด้านปรัชญาส่วนบุคคล" }
+  ],
+  "axes": [
+    { "id": "soc_cap", "pole_a": { "tag": "SOC", "label_th": "สังคมนิยม" }, "pole_b": { "tag": "CAP", "label_th": "ทุนนิยม" } },
+    { "id": "pln_mkt", "pole_a": { "tag": "PLN", "label_th": "วางแผน/กำกับ" }, "pole_b": { "tag": "MKT", "label_th": "ตลาดเสรี" } },
+    { "id": "auth_lib", "pole_a": { "tag": "LIB", "label_th": "เสรีภาพนิยม" }, "pole_b": { "tag": "AUTH", "label_th": "อำนาจนิยม" } },
+    { "id": "dem_autc", "pole_a": { "tag": "DEM", "label_th": "ประชาธิปไตย" }, "pole_b": { "tag": "AUTC", "label_th": "อัตตาธิปไตย" } },
+    { "id": "univ_part", "pole_a": { "tag": "UNIV", "label_th": "สากลนิยม" }, "pole_b": { "tag": "PART", "label_th": "เฉพาะนิยม" } },
+    { "id": "glob_nat", "pole_a": { "tag": "GLOB", "label_th": "โลกาภิวัตน์" }, "pole_b": { "tag": "NAT", "label_th": "ชาตินิยม" } },
+    { "id": "prog_trad", "pole_a": { "tag": "PROG", "label_th": "ก้าวหน้า" }, "pole_b": { "tag": "TRAD", "label_th": "จารีต" } },
+    { "id": "refm_cons", "pole_a": { "tag": "REFM", "label_th": "ปฏิรูป" }, "pole_b": { "tag": "CONS", "label_th": "อนุรักษ์" } },
+    { "id": "acc_dec", "pole_a": { "tag": "ACC", "label_th": "เร่งพัฒนา" }, "pole_b": { "tag": "DEC", "label_th": "ชะลอ" } },
+    { "id": "trans_prim", "pole_a": { "tag": "TRANS", "label_th": "ข้ามมนุษย์นิยม" }, "pole_b": { "tag": "PRIM", "label_th": "ดั้งเดิมนิยม" } },
+    { "id": "coml_civl", "pole_a": { "tag": "COML", "label_th": "คอมมอนลอว์" }, "pole_b": { "tag": "CIVL", "label_th": "ซีวิลลอว์" } },
+    { "id": "pun_rehb", "pole_a": { "tag": "PUN", "label_th": "ลงโทษ" }, "pole_b": { "tag": "REHB", "label_th": "ฟื้นฟู" } },
+    { "id": "eqal_hier", "pole_a": { "tag": "EQAL", "label_th": "เท่าเทียม" }, "pole_b": { "tag": "HIER", "label_th": "ลำดับชั้น" } },
+    { "id": "multi_mono", "pole_a": { "tag": "MULTI", "label_th": "พหุวัฒนธรรม" }, "pole_b": { "tag": "MONO", "label_th": "เอกวัฒนธรรม" } },
+    { "id": "cmpr_pers", "pole_a": { "tag": "CMPR", "label_th": "ประนีประนอม" }, "pole_b": { "tag": "PERS", "label_th": "ยืนหยัด" } },
+    { "id": "trns_dirc", "pole_a": { "tag": "TRNS", "label_th": "ค่อยเป็นค่อยไป" }, "pole_b": { "tag": "DIRC", "label_th": "เปลี่ยนทันที" } },
+    { "id": "mod_rad", "pole_a": { "tag": "MOD", "label_th": "ปานกลาง" }, "pole_b": { "tag": "RAD", "label_th": "ถอนราก" } },
+    { "id": "polz_apol", "pole_a": { "tag": "POLZ", "label_th": "การเมืองเข้มข้น" }, "pole_b": { "tag": "APOL", "label_th": "ไม่ยุ่งการเมือง" } },
+    { "id": "ind_col", "pole_a": { "tag": "IND", "label_th": "ปัจเจกนิยม" }, "pole_b": { "tag": "COL", "label_th": "รวมหมู่" } },
+    { "id": "rev_peace", "pole_a": { "tag": "REV", "label_th": "ปฏิวัติ" }, "pole_b": { "tag": "PAC", "label_th": "สันติวิธี" } },
+    { "id": "ideal_real", "pole_a": { "tag": "IDEL", "label_th": "อุดมคตินิยม" }, "pole_b": { "tag": "REAL", "label_th": "สัจนิยม" } },
+    { "id": "conseq_deont", "pole_a": { "tag": "CONSQ", "label_th": "ผลลัพธ์นิยม" }, "pole_b": { "tag": "DEON", "label_th": "หน้าที่นิยม" } }
+  ],
+  "compasses": [
+    { "id": "regular", "name_th": "ทั่วไป (ค่าสังเคราะห์)", "left": { "tag": "REG_LEFT", "label_th": "ซ้ายทั่วไป" }, "right": { "tag": "REG_RIGHT", "label_th": "ขวาทั่วไป" }, "top": { "tag": "REG_AUTH", "label_th": "อำนาจนิยม" }, "bottom": { "tag": "REG_LIB", "label_th": "เสรีภาพนิยม" } },
+    { "id": "economic", "name_th": "เศรษฐกิจ", "left": { "tag": "SOC", "label_th": "สังคมนิยม" }, "right": { "tag": "CAP", "label_th": "ทุนนิยม" }, "top": { "tag": "PLN", "label_th": "กำกับ/วางแผน" }, "bottom": { "tag": "MKT", "label_th": "ปล่อยเสรี" } },
+    { "id": "governmental", "name_th": "การปกครอง", "left": { "tag": "AUTC", "label_th": "อัตตาธิปไตย" }, "right": { "tag": "DEM", "label_th": "ประชาธิปไตย" }, "top": { "tag": "AUTH", "label_th": "อำนาจนิยม" }, "bottom": { "tag": "LIB", "label_th": "เสรีภาพนิยม" } },
+    { "id": "diplomatic", "name_th": "การทูต", "left": { "tag": "UNIV", "label_th": "สากลนิยม" }, "right": { "tag": "PART", "label_th": "เฉพาะนิยม" }, "top": { "tag": "NAT", "label_th": "ชาตินิยม" }, "bottom": { "tag": "GLOB", "label_th": "โลกาภิวัตน์" } },
+    { "id": "societal", "name_th": "สังคม", "left": { "tag": "PROG", "label_th": "ก้าวหน้า" }, "right": { "tag": "TRAD", "label_th": "จารีต" }, "top": { "tag": "CONS", "label_th": "อนุรักษ์" }, "bottom": { "tag": "REFM", "label_th": "ปฏิรูป" } },
+    { "id": "technological", "name_th": "เทคโนโลยี", "left": { "tag": "ACC", "label_th": "เร่งพัฒนา" }, "right": { "tag": "DEC", "label_th": "ชะลอ" }, "top": { "tag": "TRANS", "label_th": "ข้ามมนุษย์" }, "bottom": { "tag": "PRIM", "label_th": "ดั้งเดิม" } },
+    { "id": "law", "name_th": "กฎหมาย", "left": { "tag": "COML", "label_th": "คอมมอนลอว์" }, "right": { "tag": "CIVL", "label_th": "ซีวิลลอว์" }, "top": { "tag": "PUN", "label_th": "ลงโทษ" }, "bottom": { "tag": "REHB", "label_th": "ฟื้นฟู" } },
+    { "id": "cultural", "name_th": "วัฒนธรรม", "left": { "tag": "EQAL", "label_th": "เท่าเทียม" }, "right": { "tag": "HIER", "label_th": "ลำดับชั้น" }, "top": { "tag": "MONO", "label_th": "เอกวัฒนธรรม" }, "bottom": { "tag": "MULTI", "label_th": "พหุวัฒนธรรม" } },
+    { "id": "procedural", "name_th": "กระบวนการ", "left": { "tag": "CMPR", "label_th": "ประนีประนอม" }, "right": { "tag": "PERS", "label_th": "ยืนหยัด" }, "top": { "tag": "TRNS", "label_th": "ค่อยเป็นค่อยไป" }, "bottom": { "tag": "DIRC", "label_th": "เปลี่ยนทันที" } },
+    { "id": "political", "name_th": "การเมือง", "left": { "tag": "MOD", "label_th": "ปานกลาง" }, "right": { "tag": "RAD", "label_th": "ถอนราก" }, "top": { "tag": "POLZ", "label_th": "การเมืองเข้มข้น" }, "bottom": { "tag": "APOL", "label_th": "ไม่ยุ่งการเมือง" } }
+  ],
+  "bars": [
+    { "left_tag": "CAP", "right_tag": "SOC" }, { "left_tag": "MKT", "right_tag": "PLN" },
+    { "left_tag": "LIB", "right_tag": "AUTH" }, { "left_tag": "AUTC", "right_tag": "DEM" },
+    { "left_tag": "GLOB", "right_tag": "NAT" }, { "left_tag": "PART", "right_tag": "UNIV" },
+    { "left_tag": "TRAD", "right_tag": "PROG" }, { "left_tag": "CONS", "right_tag": "REFM" },
+    { "left_tag": "DEC", "right_tag": "ACC" }, { "left_tag": "PRIM", "right_tag": "TRANS" },
+    { "left_tag": "CIVL", "right_tag": "COML" }, { "left_tag": "PUN", "right_tag": "REHB" },
+    { "left_tag": "HIER", "right_tag": "EQAL" }, { "left_tag": "MULTI", "right_tag": "MONO" },
+    { "left_tag": "PERS", "right_tag": "CMPR" }, { "left_tag": "DIRC", "right_tag": "TRNS" },
+    { "left_tag": "RAD", "right_tag": "MOD" }, { "left_tag": "POLZ", "right_tag": "APOL" },
+    { "left_tag": "IND", "right_tag": "COL" }, { "left_tag": "REV", "right_tag": "PAC" },
+    { "left_tag": "IDEL", "right_tag": "REAL" }, { "left_tag": "CONSQ", "right_tag": "DEON" }
+  ],
+  "matching": {
+    "axes": ["soc_cap", "pln_mkt", "auth_lib", "glob_nat", "prog_trad", "eqal_hier"]
+  },
+  "ideologies": [
+    { "id": "ancom", "name_th": "อนาโค-คอมมิวนิสต์", "name_en": "Anarcho-Communism", "blurb_th": "ล้มล้างรัฐและทุนนิยม จัดสรรทรัพยากรตามความต้องการผ่านชุมชนไร้ลำดับชั้น", "profile": { "soc_cap": 0, "pln_mkt": 0, "auth_lib": 0, "glob_nat": 20, "prog_trad": 10, "eqal_hier": 0 } },
+    { "id": "libsoc", "name_th": "สังคมนิยมเสรีภาพนิยม", "name_en": "Libertarian Socialism", "blurb_th": "สังคมนิยมที่ปฏิเสธรัฐรวมศูนย์ เน้นการจัดการตนเองของชุมชนและคนงาน", "profile": { "soc_cap": 5, "pln_mkt": 10, "auth_lib": 5, "glob_nat": 25, "prog_trad": 15, "eqal_hier": 5 } },
+    { "id": "synd", "name_th": "ซินดิคัลลิสม์", "name_en": "Syndicalism", "blurb_th": "สหภาพแรงงานเป็นเจ้าของและบริหารเศรษฐกิจผ่านการนัดหยุดงานทั่วไป", "profile": { "soc_cap": 5, "pln_mkt": 5, "auth_lib": 10, "glob_nat": 30, "prog_trad": 20, "eqal_hier": 10 } },
+    { "id": "demconf", "name_th": "สหพันธนิยมประชาธิปไตย", "name_en": "Democratic Confederalism", "blurb_th": "ประชาธิปไตยรากหญ้าระดับชุมชนโดยไม่มุ่งยึดรัฐชาติ", "profile": { "soc_cap": 10, "pln_mkt": 15, "auth_lib": 5, "glob_nat": 35, "prog_trad": 25, "eqal_hier": 10 } },
+    { "id": "ml", "name_th": "มาร์กซิสต์-เลนินนิสต์", "name_en": "Marxism-Leninism", "blurb_th": "พรรคนำปฏิวัติชนกรรมาชีพและสร้างรัฐสังคมนิยมรวมศูนย์", "profile": { "soc_cap": 0, "pln_mkt": 0, "auth_lib": 85, "glob_nat": 40, "prog_trad": 30, "eqal_hier": 20 } },
+    { "id": "trot", "name_th": "ทรอตสกีนิยม", "name_en": "Trotskyism", "blurb_th": "สังคมนิยมปฏิวัติต่อเนื่องและสากลนิยมต่อต้านระบบราชการรวมศูนย์", "profile": { "soc_cap": 0, "pln_mkt": 5, "auth_lib": 70, "glob_nat": 35, "prog_trad": 25, "eqal_hier": 15 } },
+    { "id": "statesoc", "name_th": "สังคมนิยมรัฐนิยม", "name_en": "State Socialism", "blurb_th": "รัฐเป็นเจ้าของปัจจัยการผลิตและวางแผนเศรษฐกิจจากส่วนกลาง", "profile": { "soc_cap": 5, "pln_mkt": 5, "auth_lib": 80, "glob_nat": 50, "prog_trad": 40, "eqal_hier": 30 } },
+    { "id": "demsoc", "name_th": "สังคมนิยมประชาธิปไตย", "name_en": "Democratic Socialism", "blurb_th": "สังคมนิยมบรรลุผ่านกระบวนการประชาธิปไตยและสวัสดิการเข้มแข็ง", "profile": { "soc_cap": 15, "pln_mkt": 25, "auth_lib": 20, "glob_nat": 30, "prog_trad": 20, "eqal_hier": 15 } },
+    { "id": "socdem", "name_th": "สังคมประชาธิปไตย", "name_en": "Social Democracy", "blurb_th": "เศรษฐกิจตลาดควบสวัสดิการถ้วนหน้าและภาษีอัตราก้าวหน้า", "profile": { "soc_cap": 35, "pln_mkt": 40, "auth_lib": 25, "glob_nat": 30, "prog_trad": 30, "eqal_hier": 20 } },
+    { "id": "mktsoc", "name_th": "สังคมนิยมตลาด", "name_en": "Market Socialism", "blurb_th": "กรรมสิทธิ์สังคมหรือสหกรณ์แข่งขันภายในกลไกตลาด", "profile": { "soc_cap": 30, "pln_mkt": 60, "auth_lib": 15, "glob_nat": 30, "prog_trad": 25, "eqal_hier": 15 } },
+    { "id": "georg", "name_th": "จอร์จิสต์", "name_en": "Georgism", "blurb_th": "เก็บภาษีมูลค่าที่ดินเป็นรายได้หลักของรัฐ ลดภาษีแรงงานและทุน", "profile": { "soc_cap": 45, "pln_mkt": 70, "auth_lib": 10, "glob_nat": 30, "prog_trad": 30, "eqal_hier": 20 } },
+    { "id": "distrib", "name_th": "ดิสทริบิวทิสม์", "name_en": "Distributism", "blurb_th": "กระจายกรรมสิทธิ์ทรัพย์สินให้กว้างขวางที่สุดตามหลักสังคมคาทอลิก", "profile": { "soc_cap": 40, "pln_mkt": 50, "auth_lib": 30, "glob_nat": 45, "prog_trad": 60, "eqal_hier": 35 } },
+    { "id": "cons", "name_th": "อนุรักษนิยม", "name_en": "Conservatism", "blurb_th": "รักษาสถาบันดั้งเดิมและเปลี่ยนแปลงอย่างระมัดระวังตามประเพณี", "profile": { "soc_cap": 60, "pln_mkt": 65, "auth_lib": 45, "glob_nat": 55, "prog_trad": 70, "eqal_hier": 45 } },
+    { "id": "paleo", "name_th": "อนุรักษ์นิยมดั้งเดิม", "name_en": "Paleoconservatism", "blurb_th": "อนุรักษ์วัฒนธรรมท้องถิ่นและต้านการแทรกแซงต่างแดน", "profile": { "soc_cap": 55, "pln_mkt": 60, "auth_lib": 55, "glob_nat": 70, "prog_trad": 80, "eqal_hier": 50 } },
+    { "id": "neocon", "name_th": "อนุรักษนิยมใหม่", "name_en": "Neoconservatism", "blurb_th": "ตลาดเสรีควบการทูตเชิงรุกเพื่อเผยแพร่อุดมการณ์", "profile": { "soc_cap": 65, "pln_mkt": 70, "auth_lib": 60, "glob_nat": 75, "prog_trad": 60, "eqal_hier": 55 } },
+    { "id": "rwpop", "name_th": "ประชานิยมฝ่ายขวา", "name_en": "Right-Wing Populism", "blurb_th": "ชาตินิยมทางวัฒนธรรมควบเศรษฐกิจปกป้องคนภายในและต้านชนชั้นนำ", "profile": { "soc_cap": 50, "pln_mkt": 55, "auth_lib": 80, "glob_nat": 80, "prog_trad": 75, "eqal_hier": 60 } },
+    { "id": "natbol", "name_th": "ชาตินิยมบอลเชวิก", "name_en": "National Bolshevism", "blurb_th": "ผสมชาตินิยมจัดกับเศรษฐกิจสังคมนิยมภายใต้รัฐอำนาจนิยม รวมไว้เพื่อจำแนกตำแหน่งสุดขั้ว", "profile": { "soc_cap": 10, "pln_mkt": 10, "auth_lib": 95, "glob_nat": 95, "prog_trad": 60, "eqal_hier": 70 } },
+    { "id": "techno", "name_th": "เทคโนเครซี", "name_en": "Technocracy", "blurb_th": "ผู้เชี่ยวชาญทางวิทยาศาสตร์และเทคนิคเป็นผู้ตัดสินใจนโยบาย", "profile": { "soc_cap": 50, "pln_mkt": 40, "auth_lib": 70, "glob_nat": 40, "prog_trad": 35, "eqal_hier": 40 } },
+    { "id": "authcap", "name_th": "ทุนนิยมอำนาจนิยม", "name_en": "Authoritarian Capitalism", "blurb_th": "ตลาดและกรรมสิทธิ์เอกชนภายใต้รัฐที่ควบคุมการเมืองเข้มงวด", "profile": { "soc_cap": 85, "pln_mkt": 75, "auth_lib": 90, "glob_nat": 60, "prog_trad": 50, "eqal_hier": 70 } },
+    { "id": "classlib", "name_th": "เสรีนิยมคลาสสิก", "name_en": "Classical Liberalism", "blurb_th": "เสรีภาพปัจเจก ตลาดเสรี และรัฐจำกัดอำนาจตามหลักนิติธรรม", "profile": { "soc_cap": 75, "pln_mkt": 80, "auth_lib": 20, "glob_nat": 25, "prog_trad": 35, "eqal_hier": 30 } },
+    { "id": "neolib", "name_th": "เสรีนิยมใหม่", "name_en": "Neoliberalism", "blurb_th": "เปิดเสรีตลาด การแปรรูป และการค้าโลกเป็นแกนการพัฒนา", "profile": { "soc_cap": 80, "pln_mkt": 85, "auth_lib": 30, "glob_nat": 35, "prog_trad": 40, "eqal_hier": 35 } },
+    { "id": "minarch", "name_th": "มินาร์คิสม์", "name_en": "Minarchism", "blurb_th": "รัฐจำกัดเฉพาะตำรวจ ศาล และกองทัพ", "profile": { "soc_cap": 90, "pln_mkt": 90, "auth_lib": 10, "glob_nat": 20, "prog_trad": 30, "eqal_hier": 25 } },
+    { "id": "rightlib", "name_th": "เสรีภาพนิยมฝ่ายขวา", "name_en": "Right-Libertarianism", "blurb_th": "สิทธิในทรัพย์สินสัมบูรณ์และตลาดเสรีโดยรัฐเล็กที่สุด", "profile": { "soc_cap": 92, "pln_mkt": 92, "auth_lib": 8, "glob_nat": 20, "prog_trad": 25, "eqal_hier": 20 } },
+    { "id": "ancap", "name_th": "อนาโค-ทุนนิยม", "name_en": "Anarcho-Capitalism", "blurb_th": "ยกเลิกรัฐ บริการทั้งหมดแข่งขันโดยเอกชนตามสัญญาสมัครใจ", "profile": { "soc_cap": 100, "pln_mkt": 100, "auth_lib": 0, "glob_nat": 15, "prog_trad": 20, "eqal_hier": 10 } }
+  ]
+};
+
+// Generate 204 Questions dynamically from data mapping structure
+const Q_SPECS = [
+  // Cat 1 (1-20)
+  { id: 1, cat: 1, tag: "SOC", axis: "soc_cap", pole: "a", text: "ปัจจัยการผลิตหลักควรเป็นของรัฐหรือชุมชน" },
+  { id: 2, cat: 1, tag: "CAP", axis: "soc_cap", pole: "b", text: "โดยทั่วไปเอกชนบริหารกิจการได้มีประสิทธิภาพกว่ารัฐ" },
+  { id: 3, cat: 1, tag: "SOC", axis: "soc_cap", pole: "a", text: "กำไรของบริษัทขนาดใหญ่ควรถูกนำมากระจายสู่สังคมผ่านภาษี" },
+  { id: 4, cat: 1, tag: "CAP", axis: "soc_cap", pole: "b", text: "สิทธิในการถือครองหุ้นและรับเงินปันผลเป็นสิทธิอันชอบธรรม" },
+  { id: 5, cat: 1, tag: "SOC", axis: "soc_cap", pole: "a", text: "รัฐควรประกันรายได้ขั้นต่ำให้ประชาชนทุกคนมีคุณภาพชีวิตที่ดี" },
+  { id: 6, cat: 1, tag: "CAP", axis: "soc_cap", pole: "b", text: "การกำหนดค่าแรงขั้นต่ำโดยรัฐทำให้ธุรกิจขนาดเล็กอยู่รอดยาก" },
+  { id: 7, cat: 1, tag: "SOC", axis: "soc_cap", pole: "a", text: "ที่อยู่อาศัยควรเป็นสิทธิที่รัฐจัดหาให้ ไม่ใช่สินค้าเพื่อการเก็งกำไร" },
+  { id: 8, cat: 1, tag: "CAP", axis: "soc_cap", pole: "b", text: "ตลาดอสังหาริมทรัพย์เสรีช่วยให้เมืองพัฒนาและเพิ่มอุปทานที่อยู่อาศัย" },
+  { id: 9, cat: 1, tag: "SOC", axis: "soc_cap", pole: "a", text: "ระบบธนาคารและสถาบันการเงินควรอยู่ภายใต้การควบคุมของสาธารณะ" },
+  { id: 10, cat: 1, tag: "CAP", axis: "soc_cap", pole: "b", text: "นวัตกรรมทางการเงินและสินเชื่อเอกชนช่วยกระตุ้นเศรษฐกิจฐานราก" },
+  { id: 11, cat: 1, tag: "PLN", axis: "pln_mkt", pole: "a", text: "รัฐบาลควรวางแผนการผลิตสินค้าจำเป็นเพื่อป้องกันภาวะขาดแคลน" },
+  { id: 12, cat: 1, tag: "MKT", axis: "pln_mkt", pole: "b", text: "ราคาสินค้าควรปล่อยให้เป็นไปตามกลไกอุปสงค์และอุปทาน" },
+  { id: 13, cat: 1, tag: "PLN", axis: "pln_mkt", pole: "a", text: "การอุดหนุนราคาพืชผลทางการเกษตรโดยรัฐช่วยปกป้องความมั่นคงทางอาหาร" },
+  { id: 14, cat: 1, tag: "MKT", axis: "pln_mkt", pole: "b", text: "การแทรกแซงราคาโดยรัฐมักทำให้เกิดตลาดมืดและสินค้าขาดแคลน" },
+  { id: 15, cat: 1, tag: "PLN", axis: "pln_mkt", pole: "a", text: "รัฐควรควบคุมการเคลื่อนย้ายทุนข้ามประเทศเพื่อปกป้องเศรษฐกิจภายใน" },
+  { id: 16, cat: 1, tag: "MKT", axis: "pln_mkt", pole: "b", text: "เสรีภาพในการเคลื่อนย้ายทุนดึงดูดการลงทุนจากต่างชาติได้ดีกว่า" },
+  { id: 17, cat: 1, tag: "PLN", axis: "pln_mkt", pole: "a", text: "โครงสร้างพื้นฐานขนาดใหญ่ควรถูกกำหนดทิศทางโดยแผนแม่บทของรัฐ" },
+  { id: 18, cat: 1, tag: "MKT", axis: "pln_mkt", pole: "b", text: "ภาคเอกชนควรเป็นผู้ตัดสินใจลงทุนในโครงสร้างพื้นฐานตามความต้องการตลาด" },
+  { id: 19, cat: 1, tag: "PLN", axis: "pln_mkt", pole: "a", text: "รัฐควรถือครองกิจการสาธารณูปโภคแต่ผู้เดียวเพื่อให้ประชาชนเข้าถึงบริการในราคาต่ำ" },
+  { id: 20, cat: 1, tag: "MKT", axis: "pln_mkt", pole: "b", text: "การแปรรูปรัฐวิสาหกิจช่วยเพิ่มประสิทธิภาพและลดภาระงบประมาณแผ่นดิน" },
+  // Cat 2 (21-40)
+  { id: 21, cat: 2, tag: "LIB", axis: "auth_lib", pole: "a", text: "รัฐไม่มีสิทธิสอดส่องข้อมูลส่วนตัวของประชาชนโดยไม่มีการพิสูจน์" },
+  { id: 22, cat: 2, tag: "AUTH", axis: "auth_lib", pole: "b", text: "ความมั่นคงของชาติสำคัญกว่าเสรีภาพในการแสดงออก" },
+  { id: 23, cat: 2, tag: "LIB", axis: "auth_lib", pole: "a", text: "บุคคลควรมีสิทธิทำทุกอย่างตราบใดที่ไม่ละเมิดสิทธิผู้อื่น" },
+  { id: 24, cat: 2, tag: "AUTH", axis: "auth_lib", pole: "b", text: "สังคมที่มีระเบียบวินัยเข้มงวดจะเจริญรุ่งเรืองกว่าสังคมที่ปล่อยปละละเลย" },
+  { id: 25, cat: 2, tag: "LIB", axis: "auth_lib", pole: "a", text: "การกระจายอำนาจสู่ท้องถิ่นช่วยลดการใช้อำนาจรัฐโดยมิชอบ" },
+  { id: 26, cat: 2, tag: "AUTH", axis: "auth_lib", pole: "b", text: "ผู้นำที่เข้มแข็งและเด็ดขาดจำเป็นต่อการฝ่าฟันวิกฤตของชาติ" },
+  { id: 27, cat: 2, tag: "LIB", axis: "auth_lib", pole: "a", text: "วิถีชีวิตส่วนบุคคลเป็นเรื่องส่วนตัวที่รัฐไม่ควรยุ่งเกี่ยว" },
+  { id: 28, cat: 2, tag: "AUTH", axis: "auth_lib", pole: "b", text: "การประท้วงที่กระทบต่อเศรษฐกิจควรถูกจำกัดโดยกฎหมาย" },
+  { id: 29, cat: 2, tag: "LIB", axis: "auth_lib", pole: "a", text: "ประชาชนควรมีสิทธิปกป้องตนเองรวมถึงการครอบครองอาวุธ" },
+  { id: 30, cat: 2, tag: "AUTH", axis: "auth_lib", pole: "b", text: "ศีลธรรมอันดีของส่วนรวมควรถูกบังคับใช้ผ่านกฎหมาย" },
+  { id: 31, cat: 2, tag: "DEM", axis: "dem_autc", pole: "a", text: "ผู้นำประเทศต้องมาจากการเลือกตั้งของประชาชนเท่านั้น" },
+  { id: 32, cat: 2, tag: "AUTC", axis: "dem_autc", pole: "b", text: "ในยามวิกฤต การมีผู้นำเดี่ยวที่ตัดสินใจเร็วสำคัญกว่ากระบวนการรัฐสภา" },
+  { id: 33, cat: 2, tag: "DEM", axis: "dem_autc", pole: "a", text: "เสียงข้างมากในสภาต้องเคารพและไม่ละเมิดสิทธิของกลุ่มน้อย" },
+  { id: 34, cat: 2, tag: "AUTC", axis: "dem_autc", pole: "b", text: "ผู้เชี่ยวชาญและเทคโนแครตควรเป็นผู้กำหนดนโยบายแทนนักการเมือง" },
+  { id: 35, cat: 2, tag: "DEM", axis: "dem_autc", pole: "a", text: "ประชาชนควรมีสิทธิลงประชามติถอดถอนผู้นำที่ทุจริตหรือล้มเหลว" },
+  { id: 36, cat: 2, tag: "AUTC", axis: "dem_autc", pole: "b", text: "สถาบันการปกครองแบบดั้งเดิมและชนชั้นนำช่วยรักษาเสถียรภาพของชาติ" },
+  { id: 37, cat: 2, tag: "DEM", axis: "dem_autc", pole: "a", text: "การมีพรรคการเมืองหลากหลายสะท้อนเจตจำนงที่แท้จริงของประชาชน" },
+  { id: 38, cat: 2, tag: "AUTC", axis: "dem_autc", pole: "b", text: "ระบบหลายพรรคมักสร้างความขัดแย้งและทำให้การบริหารประเทศหยุดชะงัก" },
+  { id: 39, cat: 2, tag: "DEM", axis: "dem_autc", pole: "a", text: "สื่อมวลชนและฝ่ายค้านต้องทำหน้าที่ตรวจสอบรัฐบาลอย่างอิสระ" },
+  { id: 40, cat: 2, tag: "AUTC", axis: "dem_autc", pole: "b", text: "การจำกัดการวิจารณ์รัฐบาลในบางช่วงเวลามีความจำเป็นเพื่อความสามัคคีในชาติ" },
+  // Cat 3 (41-60)
+  { id: 41, cat: 3, tag: "UNIV", axis: "univ_part", pole: "a", text: "สิทธิมนุษยชนเป็นมาตรฐานสากลที่ทุกประเทศต้องปฏิบัติตาม" },
+  { id: 42, cat: 3, tag: "PART", axis: "univ_part", pole: "b", text: "แต่ละประเทศมีสิทธิกำหนดระบบสังคมของตนโดยปราศจากการแทรกแซงจากภายนอก" },
+  { id: 43, cat: 3, tag: "UNIV", axis: "univ_part", pole: "a", text: "ศาลอาญาระหว่างประเทศควรมีอำนาจตัดสินผู้นำที่ก่ออาชญากรรมต่อมนุษยชาติ" },
+  { id: 44, cat: 3, tag: "PART", axis: "univ_part", pole: "b", text: "สนธิสัญญาระหว่างประเทศไม่ควรละเมิดอำนาจอธิปไตยและกฎหมายภายในชาติ" },
+  { id: 45, cat: 3, tag: "UNIV", axis: "univ_part", pole: "a", text: "ประเทศร่ำรวยมีหน้าที่ทางศีลธรรมในการช่วยเหลือประเทศยากจน" },
+  { id: 46, cat: 3, tag: "PART", axis: "univ_part", pole: "b", text: "งบประมาณของรัฐควรทุ่มเทเพื่อแก้ปัญหาความยากจนในประเทศตนเองก่อน" },
+  { id: 47, cat: 3, tag: "UNIV", axis: "univ_part", pole: "a", text: "ปัญหาสิ่งแวดล้อมและโลกร้อนต้องแก้ด้วยข้อตกลงที่ผูกมัดทุกชาติ" },
+  { id: 48, cat: 3, tag: "PART", axis: "univ_part", pole: "b", text: "แต่ละชาติควรจัดการปัญหาสิ่งแวดล้อมตามบริบทและศักยภาพของตนเอง" },
+  { id: 49, cat: 3, tag: "UNIV", axis: "univ_part", pole: "a", text: "การแทรกแซงทางการทหารเพื่อหยุดยั้งการฆ่าล้างเผ่าพันธุ์เป็นเรื่องชอบธรรม" },
+  { id: 50, cat: 3, tag: "PART", axis: "univ_part", pole: "b", text: "การส่งทหารไปทำสงครามในต่างแดนเป็นการผลาญทรัพยากรและชีวิตของชาติตนเอง" },
+  { id: 51, cat: 3, tag: "GLOB", axis: "glob_nat", pole: "a", text: "พรมแดนประเทศควรเปิดกว้างเพื่อการเคลื่อนย้ายของผู้คนและทุน" },
+  { id: 52, cat: 3, tag: "NAT", axis: "glob_nat", pole: "b", text: "การควบคุมพรมแดนอย่างเข้มงวดจำเป็นต่อการรักษาความมั่นคงและอัตลักษณ์" },
+  { id: 53, cat: 3, tag: "GLOB", axis: "glob_nat", pole: "a", text: "องค์การระหว่างประเทศควรมีอำนาจเหนือรัฐชาติในประเด็นระดับโลก" },
+  { id: 54, cat: 3, tag: "NAT", axis: "glob_nat", pole: "b", text: "ผลประโยชน์ทางเศรษฐกิจและความปลอดภัยของชาติต้องมาก่อนความร่วมมือระดับโลก" },
+  { id: 55, cat: 3, tag: "GLOB", axis: "glob_nat", pole: "a", text: "การค้าเสรีข้ามพรมแดนช่วยยกระดับคุณภาพชีวิตของมนุษยชาติโดยรวม" },
+  { id: 56, cat: 3, tag: "NAT", axis: "glob_nat", pole: "b", text: "ภาษีศุลกากรจำเป็นเพื่อปกป้องอุตสาหกรรมและเกษตรกรภายในประเทศ" },
+  { id: 57, cat: 3, tag: "GLOB", axis: "glob_nat", pole: "a", text: "มนุษย์ทุกคนคือพลเมืองโลกที่ไม่ควรถูกเลือกปฏิบัติจากสัญชาติ" },
+  { id: 58, cat: 3, tag: "NAT", axis: "glob_nat", pole: "b", text: "ความภักดีต่อชาติและวัฒนธรรมดั้งเดิมเป็นรากฐานของความสามัคคี" },
+  { id: 59, cat: 3, tag: "GLOB", axis: "glob_nat", pole: "a", text: "การรวมกลุ่มระดับภูมิภาคเป็นทิศทางที่ถูกต้องของโลก" },
+  { id: 60, cat: 3, tag: "NAT", axis: "glob_nat", pole: "b", text: "การพึ่งพาองค์กรระหว่างประเทศมากเกินไปทำให้ชาติเสียเปรียบและสูญเสียอำนาจต่อรอง" },
+  // Cat 4 (61-80)
+  { id: 61, cat: 4, tag: "PROG", axis: "prog_trad", pole: "a", text: "สังคมควรยกเลิกประเพณีที่ขัดต่อหลักสิทธิมนุษยชนสมัยใหม่" },
+  { id: 62, cat: 4, tag: "TRAD", axis: "prog_trad", pole: "b", text: "จารีตประเพณีคือภูมิปัญญาที่ช่วยยึดเหนี่ยวสังคมไม่ให้หลงทาง" },
+  { id: 63, cat: 4, tag: "PROG", axis: "prog_trad", pole: "a", text: "รัฐควรแยกศาสนาออกจากกฎหมายและการเมืองอย่างเด็ดขาด" },
+  { id: 64, cat: 4, tag: "TRAD", axis: "prog_trad", pole: "b", text: "ศาสนาและหลักธรรมควรมีบทบาทสำคัญในการชี้นำศีลธรรมของบ้านเมือง" },
+  { id: 65, cat: 4, tag: "PROG", axis: "prog_trad", pole: "a", text: "ความหลากหลายทางเพศและรูปแบบครอบครัวใหม่ควรได้รับการยอมรับทางกฎหมาย" },
+  { id: 66, cat: 4, tag: "TRAD", axis: "prog_trad", pole: "b", text: "โครงสร้างครอบครัวแบบดั้งเดิมเป็นรากฐานที่สำคัญของสังคมที่เข้มแข็ง" },
+  { id: 67, cat: 4, tag: "PROG", axis: "prog_trad", pole: "a", text: "การศึกษาควรส่งเสริมการตั้งคำถามและวิพากษ์วิจารณ์บรรทัดฐานทางสังคม" },
+  { id: 68, cat: 4, tag: "TRAD", axis: "prog_trad", pole: "b", text: "การศึกษาควรเน้นการปลูกฝังความรักชาติ ความกตัญญู และระเบียบวินัย" },
+  { id: 69, cat: 4, tag: "PROG", axis: "prog_trad", pole: "a", text: "สัญลักษณ์และอนุสาวรีย์ที่เชื่อมโยงกับการกดขี่ในอดีตควรถูกทบทวนหรือรื้อถอน" },
+  { id: 70, cat: 4, tag: "TRAD", axis: "prog_trad", pole: "b", text: "ประวัติศาสตร์และอนุสาวรีย์บรรพบุรุษคือมรดกที่ไม่ควรถูกทำลายด้วยความรู้สึกปัจจุบัน" },
+  { id: 71, cat: 4, tag: "REFM", axis: "refm_cons", pole: "a", text: "การแก้ไขรัฐธรรมนูญเพื่อเปลี่ยนแปลงโครงสร้างอำนาจเป็นสิ่งที่ควรทำเมื่อสังคมเปลี่ยนไป" },
+  { id: 72, cat: 4, tag: "CONS", axis: "refm_cons", pole: "b", text: "ความต่อเนื่องของสถาบันหลักช่วยป้องกันความสับสนวุ่นวายและวิกฤตทางการเมือง" },
+  { id: 73, cat: 4, tag: "REFM", axis: "refm_cons", pole: "a", text: "การปฏิรูปโครงสร้างสังคมอย่างรวดเร็วเป็นสิ่งจำเป็นเพื่อขจัดความไม่ยุติธรรม" },
+  { id: 74, cat: 4, tag: "CONS", axis: "refm_cons", pole: "b", text: "การเปลี่ยนผ่านทางสังคมควรเป็นไปอย่างค่อยเป็นค่อยไปเพื่อไม่ให้กระทบความสงบ" },
+  { id: 75, cat: 4, tag: "REFM", axis: "refm_cons", pole: "a", text: "กฎหมายที่ล้าสมัยและไม่สอดคล้องกับยุคสมัยควรถูกยกเลิกทันที" },
+  { id: 76, cat: 4, tag: "CONS", axis: "refm_cons", pole: "b", text: "ระบบกฎหมายและระเบียบที่มีมายาวนานผ่านการพิสูจน์แล้วว่าใช้งานได้จริง" },
+  { id: 77, cat: 4, tag: "REFM", axis: "refm_cons", pole: "a", text: "การทดลองนโยบายใหม่ๆ ในระดับท้องถิ่นเป็นสิ่งที่รัฐควรสนับสนุน" },
+  { id: 78, cat: 4, tag: "CONS", axis: "refm_cons", pole: "b", text: "การรักษาสถานะเดิมมักปลอดภัยกว่าการเสี่ยงกับสิ่งที่ไม่เคยทำ" },
+  { id: 79, cat: 4, tag: "REFM", axis: "refm_cons", pole: "a", text: "ขบวนการภาคประชาชนควรมีสิทธิผลักดันการเปลี่ยนแปลงนอกสภาเมื่อระบบปิดกั้น" },
+  { id: 80, cat: 4, tag: "CONS", axis: "refm_cons", pole: "b", text: "การเคารพกระบวนการทางรัฐสภาและกฎหมายเป็นช่องทางเดียวที่ยอมรับได้ในการเปลี่ยนแปลง" },
+  // Cat 5 (81-100)
+  { id: 81, cat: 5, tag: "ACC", axis: "acc_dec", pole: "a", text: "การพัฒนาปัญญาประดิษฐ์ (AI) ควรได้รับการผลักดันให้เร็วที่สุด" },
+  { id: 82, cat: 5, tag: "DEC", axis: "acc_dec", pole: "b", text: "การเติบโตทางเทคโนโลยีที่รวดเร็วเป็นภัยคุกคามต่อความเป็นมนุษย์และสิ่งแวดล้อม" },
+  { id: 83, cat: 5, tag: "ACC", axis: "acc_dec", pole: "a", text: "นวัตกรรมเทคโนโลยีเป็นเส้นทางหลักในการแก้ปัญหาความอดอยากและโรคภัย" },
+  { id: 84, cat: 5, tag: "DEC", axis: "acc_dec", pole: "b", text: "หลักความระมัดระวังล่วงหน้าควรกำกับนวัตกรรมก่อนปล่อยสู่สาธารณะ" },
+  { id: 85, cat: 5, tag: "ACC", axis: "acc_dec", pole: "a", text: "การสำรวจและการตั้งถิ่นฐานในอวกาศควรเป็นเป้าหมายหลักของมนุษยชาติ" },
+  { id: 86, cat: 5, tag: "DEC", axis: "acc_dec", pole: "b", text: "ทรัพยากรควรถูกนำมาใช้แก้ปัญหาบนโลกก่อนที่จะลงทุนกับโครงการอวกาศ" },
+  { id: 87, cat: 5, tag: "ACC", axis: "acc_dec", pole: "a", text: "การยอมรับเทคโนโลยีใหม่อย่างรวดเร็วเป็นจุดแข็งของสังคมที่ก้าวหน้า" },
+  { id: 88, cat: 5, tag: "DEC", axis: "acc_dec", pole: "b", text: "การทดลองทางวิทยาศาสตร์ที่กระทบต่อระบบนิเวศควรถูกสั่งห้ามอย่างเด็ดขาด" },
+  { id: 89, cat: 5, tag: "ACC", axis: "acc_dec", pole: "a", text: "การเร่งพัฒนาเทคโนโลยีควรมาก่อนความกังวลต่อผลข้างเคียงที่ยังไม่เกิดขึ้น" },
+  { id: 90, cat: 5, tag: "DEC", axis: "acc_dec", pole: "b", text: "รัฐบาลควรมีมาตรการกำกับดูแลเทคโนโลยีเข้มงวดเพื่อป้องกันการสูญเสียการควบคุม" },
+  { id: 91, cat: 5, tag: "TRANS", axis: "trans_prim", pole: "a", text: "มนุษย์ควรมีสิทธิปลูกถ่ายชิปหรืออุปกรณ์เทคโนโลยีเพื่อเพิ่มศักยภาพของสมอง" },
+  { id: 92, cat: 5, tag: "PRIM", axis: "trans_prim", pole: "b", text: "ธรรมชาติและความบริสุทธิ์ทางชีวภาพของมนุษย์ควรได้รับการปกป้องจากการดัดแปลง" },
+  { id: 93, cat: 5, tag: "TRANS", axis: "trans_prim", pole: "a", text: "การตัดต่อพันธุกรรมเพื่อเพิ่มศักยภาพและชะลอวัยเป็นก้าวต่อไปของวิวัฒนาการ" },
+  { id: 94, cat: 5, tag: "PRIM", axis: "trans_prim", pole: "b", text: "ความแก่และความตายเป็นส่วนธรรมชาติของชีวิตที่ไม่จำเป็นต้องกำจัดด้วยเทคโนโลยี" },
+  { id: 95, cat: 5, tag: "TRANS", axis: "trans_prim", pole: "a", text: "การผสานรวมระหว่างมนุษย์กับเครื่องจักรจะช่วยขจัดข้อจำกัดทางกายภาพ" },
+  { id: 96, cat: 5, tag: "PRIM", axis: "trans_prim", pole: "b", text: "วิถีชีวิตที่ใกล้ชิดธรรมชาติและไม่พึ่งพาเทคโนโลยีสูงเป็นวิถีชีวิตที่มีความสุขแท้จริง" },
+  { id: 97, cat: 5, tag: "TRANS", axis: "trans_prim", pole: "a", text: "มนุษย์ควรใช้เทคโนโลยีฝังในร่างกายเพื่อเชื่อมต่อกับเครือข่ายสารสนเทศโดยตรง" },
+  { id: 98, cat: 5, tag: "PRIM", axis: "trans_prim", pole: "b", text: "การพึ่งพาระบบอัตโนมัติมากเกินไปทำให้ทักษะการเอาตัวรอดของมนุษย์เสื่อมถอย" },
+  { id: 99, cat: 5, tag: "TRANS", axis: "trans_prim", pole: "a", text: "มนุษย์มีสิทธิปรับปรุงร่างกายตนเองด้วยเทคโนโลยีตามประสงค์" },
+  { id: 100, cat: 5, tag: "PRIM", axis: "trans_prim", pole: "b", text: "มนุษย์ไม่ควรพยายามเอาชนะข้อจำกัดทางชีวภาพของตนเองจนสูญเสียความเป็นมนุษย์" },
+  // Cat 6 (101-120)
+  { id: 101, cat: 6, tag: "COML", axis: "coml_civl", pole: "a", text: "ผู้พิพากษาควรใช้ดุลพินิจตีความกฎหมายตามบริบทของคดี" },
+  { id: 102, cat: 6, tag: "CIVL", axis: "coml_civl", pole: "b", text: "การตัดสินคดีต้องยึดตามตัวอักษรของประมวลกฎหมายอย่างเคร่งครัด" },
+  { id: 103, cat: 6, tag: "COML", axis: "coml_civl", pole: "a", text: "แนวคำพิพากษาเดิมควรเป็นแหล่งหลักของกฎหมาย" },
+  { id: 104, cat: 6, tag: "CIVL", axis: "coml_civl", pole: "b", text: "ความแน่นอนของตัวบทสำคัญกว่าดุลพินิจส่วนบุคคลของผู้พิพากษา" },
+  { id: 105, cat: 6, tag: "COML", axis: "coml_civl", pole: "a", text: "การพิจารณาโดยลูกขุนหรือสามัญชนเสริมความชอบธรรมของคำพิพากษา" },
+  { id: 106, cat: 6, tag: "CIVL", axis: "coml_civl", pole: "b", text: "กฎหมายที่ร่างโดยสภาผู้แทนราษฎรควรมีอำนาจสูงสุดเหนือการตีความของศาล" },
+  { id: 107, cat: 6, tag: "COML", axis: "coml_civl", pole: "a", text: "กฎหมายที่พัฒนาจากคดีจริงยืดหยุ่นกว่าประมวลกฎหมายที่ร่างล่วงหน้า" },
+  { id: 108, cat: 6, tag: "CIVL", axis: "coml_civl", pole: "b", text: "ผู้พิพากษาไม่ควรสร้างกฎใหม่เกินกว่าที่สภาบัญญัติไว้" },
+  { id: 109, cat: 6, tag: "COML", axis: "coml_civl", pole: "a", text: "การโต้แย้งด้วยเหตุผลต่อหน้าศาลสำคัญกว่าการเทียบเคียงตัวบท" },
+  { id: 110, cat: 6, tag: "CIVL", axis: "coml_civl", pole: "b", text: "การตีความกฎหมายควรยึดเจตนารมณ์ของผู้ร่างตามที่เขียนไว้ในตัวบท" },
+  { id: 111, cat: 6, tag: "PUN", axis: "pun_rehb", pole: "a", text: "โทษประหารชีวิตเป็นสิ่งจำเป็นสำหรับการป้องปรามอาชญากรรมร้ายแรง" },
+  { id: 112, cat: 6, tag: "REHB", axis: "pun_rehb", pole: "b", text: "โทษประหารชีวิตละเมิดสิทธิมนุษยชนและควรถูกยกเลิกอย่างสิ้นเชิง" },
+  { id: 113, cat: 6, tag: "PUN", axis: "pun_rehb", pole: "a", text: "คุกมีไว้เพื่อลงโทษและสร้างความเจ็บปวดให้สาสมกับการกระทำ" },
+  { id: 114, cat: 6, tag: "REHB", axis: "pun_rehb", pole: "b", text: "คุกควรเป็นสถานฟื้นฟูและฝึกอาชีพเพื่อให้ผู้ต้องขังกลับคืนสู่สังคม" },
+  { id: 115, cat: 6, tag: "PUN", axis: "pun_rehb", pole: "a", text: "ความยุติธรรมหมายถึงการลงโทษที่สมสัดส่วนกับความเสียหายที่ก่อ" },
+  { id: 116, cat: 6, tag: "REHB", axis: "pun_rehb", pole: "b", text: "อาชญากรรมส่วนใหญ่เกิดจากเงื่อนไขทางสังคมที่ควรแก้ที่ต้นตอ" },
+  { id: 117, cat: 6, tag: "PUN", axis: "pun_rehb", pole: "a", text: "สิทธิของผู้เสียหายและเหยื่ออาชญากรรมต้องได้รับการปกป้องมากกว่าสิทธิของผู้ต้องหา" },
+  { id: 118, cat: 6, tag: "REHB", axis: "pun_rehb", pole: "b", text: "กระบวนการยุติธรรมเชิงสมานฉันท์ควรใช้แทนศาลในคดีที่เหมาะสม" },
+  { id: 119, cat: 6, tag: "PUN", axis: "pun_rehb", pole: "a", text: "โทษที่รุนแรงและเด็ดขาดเป็นเครื่องมือสำคัญในการป้องปรามอาชญากรรม" },
+  { id: 120, cat: 6, tag: "REHB", axis: "pun_rehb", pole: "b", text: "ความเสี่ยงในการลงโทษคนบริสุทธิ์เป็นเหตุผลเพียงพอที่จะลดความรุนแรงของบทลงโทษ" },
+  // Cat 7 (121-140)
+  { id: 121, cat: 7, tag: "EQAL", axis: "eqal_hier", pole: "a", text: "ระบบโควตาเพื่อสนับสนุนกลุ่มคนชายขอบเป็นความจำเป็นเพื่อความเท่าเทียมที่แท้จริง" },
+  { id: 122, cat: 7, tag: "HIER", axis: "eqal_hier", pole: "b", text: "การคัดเลือกบุคคลเข้าทำงานควรพึ่งพาความสามารถเพียงอย่างเดียว" },
+  { id: 123, cat: 7, tag: "EQAL", axis: "eqal_hier", pole: "a", text: "สังคมที่ปราศจากชนชั้นคืออุดมคติที่มนุษย์ควรมุ่งไปให้ถึง" },
+  { id: 124, cat: 7, tag: "HIER", axis: "eqal_hier", pole: "b", text: "ลำดับชั้นในสังคมเป็นเรื่องธรรมชาติที่เกิดจากความสามารถที่แตกต่างกัน" },
+  { id: 125, cat: 7, tag: "EQAL", axis: "eqal_hier", pole: "a", text: "อำนาจตัดสินใจควรกระจายอย่างเท่าเทียม ไม่รวมศูนย์ที่ชนชั้นนำ" },
+  { id: 126, cat: 7, tag: "HIER", axis: "eqal_hier", pole: "b", text: "ผู้มีคุณวุฒิหรือฐานะพิเศษสมควรได้รับสถานะทางสังคมที่สูงกว่า" },
+  { id: 127, cat: 7, tag: "EQAL", axis: "eqal_hier", pole: "a", text: "การใช้ภาษาที่เคารพความหลากหลายช่วยลดความขัดแย้ง" },
+  { id: 128, cat: 7, tag: "HIER", axis: "eqal_hier", pole: "b", text: "ความพยายามควบคุมภาษาเพื่อความถูกต้องทางการเมืองเป็นการจำกัดเสรีภาพ" },
+  { id: 129, cat: 7, tag: "EQAL", axis: "eqal_hier", pole: "a", text: "มาตรการชดเชยกลุ่มที่เคยถูกเลือกปฏิบัติจำเป็นเพื่อความเท่าเทียมจริง" },
+  { id: 130, cat: 7, tag: "HIER", axis: "eqal_hier", pole: "b", text: "การให้สิทธิพิเศษแก่คนบางกลุ่มเป็นการสร้างความอยุติธรรมแก่คนกลุ่มอื่น" },
+  { id: 131, cat: 7, tag: "MULTI", axis: "multi_mono", pole: "a", text: "การมีหลายวัฒนธรรมและหลายศาสนาในพื้นที่เดียวกันทำให้สังคมเข้มแข็งขึ้น" },
+  { id: 132, cat: 7, tag: "MONO", axis: "multi_mono", pole: "b", text: "สังคมที่มีวัฒนธรรมเดี่ยวและกลมกลืนเป็นหนึ่งเดียวจะสงบสุขมากกว่า" },
+  { id: 133, cat: 7, tag: "MULTI", axis: "multi_mono", pole: "a", text: "ผู้ย้ายถิ่นควรรักษาวัฒนธรรมเดิมของตนควบคู่กับการอยู่ร่วมในสังคมใหม่" },
+  { id: 134, cat: 7, tag: "MONO", axis: "multi_mono", pole: "b", text: "ผู้เข้ามาอยู่ใหม่ควรกลืนกลายเข้าสู่วัฒนธรรมเดิมของประเทศ" },
+  { id: 135, cat: 7, tag: "MULTI", axis: "multi_mono", pole: "a", text: "รัฐควรสนับสนุนภาษาและประเพณีของชนกลุ่มน้อยอย่างแข็งขัน" },
+  { id: 136, cat: 7, tag: "MONO", axis: "multi_mono", pole: "b", text: "การใช้ภาษาประจำชาติเดียวช่วยลดความขัดแย้งและต้นทุนทางสังคม" },
+  { id: 137, cat: 7, tag: "MULTI", axis: "multi_mono", pole: "a", text: "หลักสูตรการศึกษาควรสะท้อนมุมมองของหลายวัฒนธรรม" },
+  { id: 138, cat: 7, tag: "MONO", axis: "multi_mono", pole: "b", text: "การรักษาเอกลักษณ์วัฒนธรรมเดิมสำคัญกว่าการเพิ่มความหลากหลาย" },
+  { id: 139, cat: 7, tag: "MULTI", axis: "multi_mono", pole: "a", text: "พหุวัฒนธรรมเป็นพัฒนาการปกติของโลกยุคโลกาภิวัตน์" },
+  { id: 140, cat: 7, tag: "MONO", axis: "multi_mono", pole: "b", text: "พหุวัฒนธรรมมากเกินไปอาจนำไปสู่การแตกแยกและความไม่เข้าใจกันในชาติ" },
+  // Cat 8 (141-160)
+  { id: 141, cat: 8, tag: "CMPR", axis: "cmpr_pers", pole: "a", text: "นักการเมืองที่ดีคือผู้ที่สามารถประนีประนอมกับฝ่ายตรงข้ามเพื่อกฎหมายที่ผ่านได้จริง" },
+  { id: 142, cat: 8, tag: "PERS", axis: "cmpr_pers", pole: "b", text: "การยอมถอยครึ่งทางคือการทรยศต่อเป้าหมายและอุดมการณ์" },
+  { id: 143, cat: 8, tag: "CMPR", axis: "cmpr_pers", pole: "a", text: "การรับฟังและปรับเข้าหาฝ่ายตรงข้ามลดความขัดแย้งในระยะยาว" },
+  { id: 144, cat: 8, tag: "PERS", axis: "cmpr_pers", pole: "b", text: "จุดยืนที่ชัดเจนสำคัญกว่าข้อตกลงที่คลุมเครือ" },
+  { id: 145, cat: 8, tag: "CMPR", axis: "cmpr_pers", pole: "a", text: "พรรคการเมืองควรยอมรับรัฐบาลผสมและการประนีประนอมนโยบาย" },
+  { id: 146, cat: 8, tag: "PERS", axis: "cmpr_pers", pole: "b", text: "การเจรจากับฝ่ายที่ละเมิดหลักการเป็นการให้ความชอบธรรมแก่ฝ่ายนั้น" },
+  { id: 147, cat: 8, tag: "CMPR", axis: "cmpr_pers", pole: "a", text: "ข้อตกลงที่ได้มาครึ่งเดียวยังดีกว่าไม่ได้เลย" },
+  { id: 148, cat: 8, tag: "PERS", axis: "cmpr_pers", pole: "b", text: "หลักการสำคัญไม่ควรแลกเปลี่ยนกับการประนีประนอมใดๆ" },
+  { id: 149, cat: 8, tag: "CMPR", axis: "cmpr_pers", pole: "a", text: "การเมืองคือศิลปะของความเป็นไปได้ ต้องยอมแลกเพื่อก้าวหน้า" },
+  { id: 150, cat: 8, tag: "PERS", axis: "cmpr_pers", pole: "b", text: "นักการเมืองควรยืนหยัดในจุดยืนแม้จะเสียคะแนนนิยม" },
+  { id: 151, cat: 8, tag: "TRNS", axis: "trns_dirc", pole: "a", text: "การเปลี่ยนสังคมต้องทำเป็นขั้นๆ เพื่อลดความโกลาหล" },
+  { id: 152, cat: 8, tag: "DIRC", axis: "trns_dirc", pole: "b", text: "เมื่อประชาชนต้องการเปลี่ยนแปลง ระบบควรเปลี่ยนทันทีโดยไม่รอขั้นตอนยาว" },
+  { id: 153, cat: 8, tag: "TRNS", axis: "trns_dirc", pole: "a", text: "ระยะเปลี่ยนผ่านต้องมีสถาบันชั่วคราวและเส้นทางที่ชัดเจนก่อนสู่ระบบเป้าหมาย" },
+  { id: 154, cat: 8, tag: "DIRC", axis: "trns_dirc", pole: "b", text: "มาตรการครึ่งๆ กลางๆ ไม่อาจแก้ปัญหาเชิงโครงสร้าง" },
+  { id: 155, cat: 8, tag: "TRNS", axis: "trns_dirc", pole: "a", text: "การทดลองนำร่องในพื้นที่เล็กก่อนขยายผลเป็นวิธีที่ปลอดภัยกว่า" },
+  { id: 156, cat: 8, tag: "DIRC", axis: "trns_dirc", pole: "b", text: "การล้มล้างระบบเก่าทันทีชอบธรรมกว่าการปฏิรูปทีละขั้น" },
+  { id: 157, cat: 8, tag: "TRNS", axis: "trns_dirc", pole: "a", text: "สังคมต้องการเวลาปรับตัวก่อนรับโครงสร้างใหม่ทั้งหมด" },
+  { id: 158, cat: 8, tag: "DIRC", axis: "trns_dirc", pole: "b", text: "ความอดทนมากเกินไปต่อระบบที่อยุติธรรมคือการสมรู้ร่วมคิด" },
+  { id: 159, cat: 8, tag: "TRNS", axis: "trns_dirc", pole: "a", text: "การเปลี่ยนแปลงฉับพลันมักเปิดช่องให้กลุ่มฉวยโอกาสยึดอำนาจ" },
+  { id: 160, cat: 8, tag: "DIRC", axis: "trns_dirc", pole: "b", text: "ระยะเปลี่ยนผ่านที่ยืดเยื้อมักถูกใช้เพื่อหน่วงการเปลี่ยนแปลงจริง" },
+  // Cat 9 (161-180)
+  { id: 161, cat: 9, tag: "MOD", axis: "mod_rad", pole: "a", text: "การเมืองสายกลางที่รับฟังทั้งสองฝ่ายเป็นทางออกที่ยั่งยืนที่สุดสำหรับประเทศ" },
+  { id: 162, cat: 9, tag: "RAD", axis: "mod_rad", pole: "b", text: "ปัญหารากเหง้าของสังคมแก้ไขได้ด้วยการรื้อระบบเดิมเท่านั้น" },
+  { id: 163, cat: 9, tag: "MOD", axis: "mod_rad", pole: "a", text: "จุดยืนสายกลางมักสะท้อนความจริงที่ซับซ้อนกว่าขั้วใดขั้วหนึ่ง" },
+  { id: 164, cat: 9, tag: "RAD", axis: "mod_rad", pole: "b", text: "ขบวนการสังคมควรตั้งเป้าหมายสูงสุดโดยไม่ลดเพดานเรียกร้อง" },
+  { id: 165, cat: 9, tag: "MOD", axis: "mod_rad", pole: "a", text: "ควรแสวงหาฉันทามติในวงกว้างมากกว่าชัยชนะของฝ่ายเดียว" },
+  { id: 166, cat: 9, tag: "RAD", axis: "mod_rad", pole: "b", text: "การเผชิญหน้ากับโครงสร้างอำนาจเป็นความจำเป็นทางศีลธรรม" },
+  { id: 167, cat: 9, tag: "MOD", axis: "mod_rad", pole: "a", text: "การเมืองที่ดีคือการบริหารสิ่งที่เป็นไปได้ ไม่ใช่การไล่ตามฝันสูงสุด" },
+  { id: 168, cat: 9, tag: "RAD", axis: "mod_rad", pole: "b", text: "การถูกเรียกว่าหัวรุนแรงไม่ใช่ความผิดหากเป้าหมายเป็นธรรม" },
+  { id: 169, cat: 9, tag: "MOD", axis: "mod_rad", pole: "a", text: "ความสุดขั้วทั้งสองฝั่งเป็นภัยต่อประชาธิปไตยเท่าเทียมกัน" },
+  { id: 170, cat: 9, tag: "RAD", axis: "mod_rad", pole: "b", text: "การปฏิรูปภายในกรอบเดิมไม่เพียงพอต่อการเปลี่ยนแปลงจริง" },
+  { id: 171, cat: 9, tag: "POLZ", axis: "polz_apol", pole: "a", text: "การเมืองแทรกซึมอยู่ในทุกอณูของชีวิตประจำวัน ไม่ใช่แค่เรื่องในสภา" },
+  { id: 172, cat: 9, tag: "APOL", axis: "polz_apol", pole: "b", text: "การเมืองเป็นเรื่องของนักการเมือง ประชาชนทั่วไปควรโฟกัสที่การทำมาหากิน" },
+  { id: 173, cat: 9, tag: "POLZ", axis: "polz_apol", pole: "a", text: "ข้าพเจ้าติดตามและมีส่วนร่วมในกิจกรรมการเมืองเป็นประจำ" },
+  { id: 174, cat: 9, tag: "APOL", axis: "polz_apol", pole: "b", text: "ข้าพเจ้าเลี่ยงการถกเถียงทางการเมืองเพื่อรักษาความสัมพันธ์ส่วนตัว" },
+  { id: 175, cat: 9, tag: "POLZ", axis: "polz_apol", pole: "a", text: "การนิ่งเฉยต่อเรื่องสาธารณะคือการยอมรับสถานะเดิม" },
+  { id: 176, cat: 9, tag: "APOL", axis: "polz_apol", pole: "b", text: "สังคมสงบกว่าเมื่อคนส่วนใหญ่ไม่ถูกระดมเข้าสู่ความขัดแย้งทางการเมือง" },
+  { id: 177, cat: 9, tag: "POLZ", axis: "polz_apol", pole: "a", text: "พื้นที่ส่วนตัว เช่น ครอบครัวและที่ทำงาน ก็สัมพันธ์กับโครงสร้างอำนาจการเมือง" },
+  { id: 178, cat: 9, tag: "APOL", axis: "polz_apol", pole: "b", text: "ข้าพเจ้าสนใจเรื่องส่วนตัวและการงานมากกว่าเรื่องการเมือง" },
+  { id: 179, cat: 9, tag: "POLZ", axis: "polz_apol", pole: "a", text: "การเมืองควรเป็นหัวข้อสนทนาปกติในชีวิตประจำวัน" },
+  { id: 180, cat: 9, tag: "APOL", axis: "polz_apol", pole: "b", text: "ชีวิตที่ดีวัดจากความสุขส่วนตัว ไม่ใช่การมีส่วนร่วมสาธารณะ" },
+  // Cat 10 (181-204)
+  { id: 181, cat: 10, tag: "COL", axis: "ind_col", pole: "b", text: "ผลประโยชน์ส่วนรวมควรอยู่เหนือความประสงค์ของปัจเจกเมื่อขัดกัน" },
+  { id: 182, cat: 10, tag: "IND", axis: "ind_col", pole: "a", text: "สิทธิส่วนบุคคลละเมิดมิได้แม้เพื่อประโยชน์ของคนส่วนใหญ่" },
+  { id: 183, cat: 10, tag: "COL", axis: "ind_col", pole: "b", text: "ความสำเร็จของชุมชนสำคัญกว่าความสำเร็จส่วนบุคคล" },
+  { id: 184, cat: 10, tag: "IND", axis: "ind_col", pole: "a", text: "แต่ละบุคคลควรเลือกวิถีชีวิตตนเองโดยไม่ถูกกลุ่มบังคับ" },
+  { id: 185, cat: 10, tag: "COL", axis: "ind_col", pole: "b", text: "หน้าที่ต่อกลุ่มเป็นแกนกลางของตัวตนทางศีลธรรม" },
+  { id: 186, cat: 10, tag: "IND", axis: "ind_col", pole: "a", text: "ปัจเจกชนควรรับผิดชอบต่อชีวิตตนเองมากกว่าพึ่งพากลุ่ม" },
+  { id: 187, cat: 10, tag: "REV", axis: "rev_peace", pole: "a", text: "เมื่อช่องทางปกติถูกปิด การใช้กำลังต่อต้านเป็นสิทธิที่ชอบธรรม" },
+  { id: 188, cat: 10, tag: "PAC", axis: "rev_peace", pole: "b", text: "การต่อสู้ต้องยึดสันติวิธีและอหิงสาอย่างเด็ดขาด" },
+  { id: 189, cat: 10, tag: "REV", axis: "rev_peace", pole: "a", text: "การลุกฮือโค่นล้มระบบที่อยุติธรรมบางครั้งจำเป็นทางประวัติศาสตร์" },
+  { id: 190, cat: 10, tag: "PAC", axis: "rev_peace", pole: "b", text: "การใช้กำลังทำลายความชอบธรรมของขบวนการแม้เป้าหมายถูกต้อง" },
+  { id: 191, cat: 10, tag: "REV", axis: "rev_peace", pole: "a", text: "การเปลี่ยนแปลงใหญ่มักไม่เกิดจากการร้องขออย่างสุภาพเพียงอย่างเดียว" },
+  { id: 192, cat: 10, tag: "PAC", axis: "rev_peace", pole: "b", text: "ความรุนแรงไม่อาจสร้างความยุติธรรมที่ยั่งยืนได้" },
+  { id: 193, cat: 10, tag: "IDEL", axis: "ideal_real", pole: "a", text: "นโยบายควรยึดหลักการอุดมการณ์แม้ต้นทุนระยะสั้นสูง" },
+  { id: 194, cat: 10, tag: "REAL", axis: "ideal_real", pole: "b", text: "การเมืองต้องคำนวณจากดุลอำนาจและผลประโยชน์จริง มากกว่าคติอุดมการณ์" },
+  { id: 195, cat: 10, tag: "IDEL", axis: "ideal_real", pole: "a", text: "สังคมควรมุ่งสู่ภาพอุดมคติแม้ดูไกลเกินเอื้อม" },
+  { id: 196, cat: 10, tag: "REAL", axis: "ideal_real", pole: "b", text: "เป้าหมายที่บรรลุได้บางส่วนดีกว่าอุดมคติที่บรรลุไม่ได้" },
+  { id: 197, cat: 10, tag: "IDEL", axis: "ideal_real", pole: "a", text: "การประนีประนอมหลักการเพื่อแลกอำนาจทำให้การเมืองเสื่อมทราม" },
+  { id: 198, cat: 10, tag: "REAL", axis: "ideal_real", pole: "b", text: "การยอมรับความจริงที่ไม่สมบูรณ์ดีกว่าการยึดติดภาพฝัน" },
+  { id: 199, cat: 10, tag: "CONSQ", axis: "conseq_deont", pole: "a", text: "ความถูกผิดของการกระทำวัดจากผลลัพธ์สุทธิที่เกิดขึ้น" },
+  { id: 200, cat: 10, tag: "DEON", axis: "conseq_deont", pole: "b", text: "บางหลักการ เช่น การไม่ทำร้ายผู้บริสุทธิ์ ห้ามละเมิดไม่ว่าผลลัพธ์ใด" },
+  { id: 201, cat: 10, tag: "CONSQ", axis: "conseq_deont", pole: "a", text: "ยอมละเมิดกฎบางข้อได้หากช่วยผู้คนได้มากกว่าอย่างชัดแจ้ง" },
+  { id: 202, cat: 10, tag: "DEON", axis: "conseq_deont", pole: "b", text: "หน้าที่และกติกาต้องรักษาไว้แม้ทำให้ผลลัพธ์รวมด้อยลง" },
+  { id: 203, cat: 10, tag: "CONSQ", axis: "conseq_deont", pole: "a", text: "นโยบายที่ดีคือนโยบายที่ผลลัพธ์รวมดีที่สุดแม้มีผู้เสียประโยชน์บางส่วน" },
+  { id: 204, cat: 10, tag: "DEON", axis: "conseq_deont", pole: "b", text: "ความยุติธรรมอยู่ที่การยึดหลักการ ไม่ใช่การคำนวณกำไรขาดทุน" }
+];
+DATA.questions = Q_SPECS;
+
+// State
+let answers = {};
+let currentIdx = 0;
+
+// Tag Map
+const tagMap = {};
+DATA.axes.forEach(ax => {
+  tagMap[ax.pole_a.tag] = { axisId: ax.id, pole: 'a' };
+  tagMap[ax.pole_b.tag] = { axisId: ax.id, pole: 'b' };
+});
+
+// Scoring Module (Pure functions)
+function sValue(val, pole) {
+  return pole === 'b' ? (val + 3) / 6 : (3 - val) / 6;
+}
+
+function calculateAxisPct(userAnswers) {
+  const acc = {};
+  DATA.axes.forEach(ax => acc[ax.id] = []);
+  
+  DATA.questions.forEach(q => {
+    const val = userAnswers[q.id] !== undefined ? userAnswers[q.id] : 0;
+    const { axisId, pole } = tagMap[q.tag];
+    acc[axisId].push(sValue(val, pole));
+  });
+
+  const pcts = {};
+  Object.keys(acc).forEach(id => {
+    const avg = acc[id].reduce((a, b) => a + b, 0) / acc[id].length;
+    pcts[id] = Math.round(avg * 1000) / 10;
+  });
+  return pcts;
+}
+
+function getRegularLeft(pcts) {
+  return ((100 - pcts["soc_cap"]) + (100 - pcts["prog_trad"]) + (100 - pcts["eqal_hier"])) / 3;
+}
+
+function getRegularAuth(pcts) {
+  return (pcts["auth_lib"] + pcts["dem_autc"]) / 3;
+}
+
+function getPctToward(pcts, tag) {
+  if (tag === "REG_LEFT") return getRegularLeft(pcts);
+  if (tag === "REG_RIGHT") return 100 - getRegularLeft(pcts);
+  if (tag === "REG_AUTH") return getRegularAuth(pcts);
+  if (tag === "REG_LIB") return 100 - getRegularAuth(pcts);
+
+  for (let ax of DATA.axes) {
+    if (tag === ax.pole_b.tag) return pcts[ax.id];
+    if (tag === ax.pole_a.tag) return 100 - pcts[ax.id];
+  }
+  return 50;
+}
+
+function calculateCompassCoords(pcts) {
+  const coords = {};
+  DATA.compasses.forEach(c => {
+    const x = getPctToward(pcts, c.right.tag);
+    const y = getPctToward(pcts, c.top.tag);
+    coords[c.id] = [Math.round((x - 50) * 20) / 10, Math.round((y - 50) * 20) / 10];
+  });
+  return coords;
+}
+
+function calculateMatching(pcts) {
+  const matchAxes = DATA.matching.axes;
+  const rows = DATA.ideologies.map(ideo => {
+    const prof = ideo.profile;
+    const sumSq = matchAxes.reduce((sum, ax) => sum + Math.pow(pcts[ax] - prof[ax], 2), 0);
+    const dist = Math.sqrt(sumSq / matchAxes.length);
+    return { dist, id: ideo.id, ideo };
+  });
+
+  rows.sort((a, b) => {
+    if (Math.abs(a.dist - b.dist) < 1e-6) return a.id.localeCompare(b.id);
+    return a.dist - b.dist;
+  });
+
+  return {
+    closest: rows[0].ideo,
+    nextMatches: [rows[1].ideo, rows[2].ideo]
+  };
+}
+
+// Compact Encoding / Decoding for Share Link
+function encodeAnswers(ansObj) {
+  // Pack 204 answers (0..6) into Uint8Array
+  const arr = new Uint8Array(204);
+  for (let i = 1; i <= 204; i++) {
+    arr[i - 1] = (ansObj[i] !== undefined ? ansObj[i] : 0) + 3; // 0..6
+  }
+  // Convert 3-bit values into byte buffer (204 * 3 bits = 612 bits = 77 bytes)
+  const bytes = new Uint8Array(77);
+  let bitIdx = 0;
+  for (let i = 0; i < 204; i++) {
+    const val = arr[i] & 0x07;
+    const bytePos = Math.floor(bitIdx / 8);
+    const bitOffset = bitIdx % 8;
+    bytes[bytePos] |= (val << bitOffset);
+    if (bitOffset > 5) {
+      bytes[bytePos + 1] |= (val >> (8 - bitOffset));
+    }
+    bitIdx += 3;
+  }
+  // Convert to Base64URL
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function decodeAnswers(str) {
+  try {
+    let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+    while (base64.length % 4) base64 += '=';
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+
+    const ans = {};
+    let bitIdx = 0;
+    for (let i = 1; i <= 204; i++) {
+      const bytePos = Math.floor(bitIdx / 8);
+      const bitOffset = bitIdx % 8;
+      let val = (bytes[bytePos] >> bitOffset) & 0x07;
+      if (bitOffset > 5 && bytePos + 1 < bytes.length) {
+        val |= (bytes[bytePos + 1] << (8 - bitOffset)) & 0x07;
+      }
+      ans[i] = val - 3;
+      bitIdx += 3;
+    }
+    return ans;
+  } catch (e) {
+    return null;
+  }
+}
+
+// UI Rendering Logic
+const introView = document.getElementById('intro-view');
+const questionView = document.getElementById('question-view');
+const resultView = document.getElementById('result-view');
+
+function showView(view) {
+  introView.style.display = 'none';
+  questionView.style.display = 'none';
+  resultView.style.display = 'none';
+  view.style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function updateQuestionUI() {
+  const q = DATA.questions[currentIdx];
+  document.getElementById('q-number').innerText = `คำถามที่ ${currentIdx + 1} จาก 204`;
+  document.getElementById('q-text').innerText = q.text;
+  
+  const cat = DATA.categories.find(c => c.index === q.cat);
+  document.getElementById('cat-badge').innerText = `หมวดที่ ${q.cat}: ${cat ? cat.name_th : ''}`;
+  
+  const pct = ((currentIdx) / 204) * 100;
+  document.getElementById('progress-fill').style.width = `${pct}%`;
+
+  document.getElementById('prev-btn').disabled = (currentIdx === 0);
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+
+  DATA.meta.scale.forEach(scale => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.style.backgroundColor = scale.bg;
+    btn.style.color = scale.fg;
+    btn.innerText = scale.label_th;
+    btn.onclick = () => selectOption(scale.value);
+    container.appendChild(btn);
+  });
+}
+
+function selectOption(val) {
+  const q = DATA.questions[currentIdx];
+  answers[q.id] = val;
+  localStorage.setItem('pcs_draft_v2', JSON.stringify(answers));
+
+  if (currentIdx < 203) {
+    currentIdx++;
+    updateQuestionUI();
+  } else {
+    finishSurvey();
+  }
+}
+
+document.getElementById('prev-btn').onclick = () => {
+  if (currentIdx > 0) {
+    currentIdx--;
+    updateQuestionUI();
+  }
+};
+
+document.getElementById('start-btn').onclick = () => {
+  answers = {};
+  currentIdx = 0;
+  localStorage.removeItem('pcs_draft_v2');
+  showView(questionView);
+  updateQuestionUI();
+};
+
+document.getElementById('resume-btn').onclick = () => {
+  const draft = localStorage.getItem('pcs_draft_v2');
+  if (draft) {
+    answers = JSON.parse(draft);
+    currentIdx = Object.keys(answers).length;
+    if (currentIdx >= 204) currentIdx = 0;
+    showView(questionView);
+    updateQuestionUI();
+  }
+};
+
+function finishSurvey() {
+  const pcts = calculateAxisPct(answers);
+  const coords = calculateCompassCoords(pcts);
+  const match = calculateMatching(pcts);
+
+  renderResults(pcts, coords, match);
+  showView(resultView);
+}
+
+function renderResults(pcts, coords, match) {
+  // 1. Closest Match
+  document.getElementById('match-name-th').innerText = match.closest.name_th;
+  document.getElementById('match-name-en').innerText = match.closest.name_en;
+  document.getElementById('match-blurb').innerText = match.closest.blurb_th;
+  document.getElementById('next-matches-text').innerText = 
+    match.nextMatches.map(m => `${m.name_th} (${m.name_en})`).join(', ');
+
+  // 2. 10 Compasses
+  const compassesContainer = document.getElementById('compasses-container');
+  compassesContainer.innerHTML = '';
+  
+  DATA.compasses.forEach(c => {
+    const box = document.createElement('div');
+    box.className = 'compass-box';
+    box.innerHTML = `
+      <h4>${c.name_th}</h4>
+      <div class="compass-canvas-container">
+        <canvas id="compass-${c.id}" width="220" height="220"></canvas>
+      </div>
+    `;
+    compassesContainer.appendChild(box);
+
+    setTimeout(() => {
+      const canvas = document.getElementById(`compass-${c.id}`);
+      if (canvas) drawCompassCanvas(canvas, c, coords[c.id]);
+    }, 0);
+  });
+
+  // 3. 22 Bars
+  const barsContainer = document.getElementById('bars-container');
+  barsContainer.innerHTML = '';
+
+  DATA.bars.forEach(b => {
+    let leftLabel = "", rightLabel = "";
+    let leftPct = 50, rightPct = 50;
+
+    DATA.axes.forEach(ax => {
+      if (ax.pole_a.tag === b.right_tag && ax.pole_b.tag === b.left_tag) {
+        leftLabel = ax.pole_b.label_th;
+        rightLabel = ax.pole_a.label_th;
+        leftPct = pcts[ax.id];
+        rightPct = 100 - leftPct;
+      } else if (ax.pole_a.tag === b.left_tag && ax.pole_b.tag === b.right_tag) {
+        leftLabel = ax.pole_a.label_th;
+        rightLabel = ax.pole_b.label_th;
+        rightPct = pcts[ax.id];
+        leftPct = 100 - rightPct;
+      }
+    });
+
+    const barDiv = document.createElement('div');
+    barDiv.className = 'bar-item';
+    barDiv.innerHTML = `
+      <div class="bar-labels">
+        <span>${leftLabel} (${leftPct.toFixed(1)}%)</span>
+        <span>${rightLabel} (${rightPct.toFixed(1)}%)</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill-left" style="width: ${leftPct}%"></div>
+        <div class="bar-fill-right" style="width: ${rightPct}%"></div>
+      </div>
+    `;
+    barsContainer.appendChild(barDiv);
+  });
+
+  // 4. Heatmap
+  setTimeout(() => {
+    const canvas = document.getElementById('heatmap-canvas');
+    if (canvas) drawHeatmapCanvas(canvas, pcts.soc_cap, pcts.auth_lib);
+  }, 0);
+}
+
+function drawCompassCanvas(canvas, compass, coord) {
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  // Background quadrant colors
+  ctx.fillStyle = '#fee2e2'; ctx.fillRect(0, 0, w/2, h/2);       // Top-Left
+  ctx.fillStyle = '#fef3c7'; ctx.fillRect(w/2, 0, w/2, h/2);     // Top-Right
+  ctx.fillStyle = '#dbeafe'; ctx.fillRect(0, h/2, w/2, h/2);     // Bottom-Left
+  ctx.fillStyle = '#dcfce7'; ctx.fillRect(w/2, h/2, w/2, h/2);   // Bottom-Right
+
+  // Axes
+  ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
+
+  // Labels
+  ctx.fillStyle = '#334155'; ctx.font = 'bold 11px "Noto Sans Thai"'; ctx.textAlign = 'center';
+  ctx.fillText(compass.top.label_th, w/2, 14);
+  ctx.fillText(compass.bottom.label_th, w/2, h - 4);
+  ctx.textAlign = 'left'; ctx.fillText(compass.left.label_th, 4, h/2 - 4);
+  ctx.textAlign = 'right'; ctx.fillText(compass.right.label_th, w - 4, h/2 - 4);
+
+  // Point plot
+  const px = (coord[0] / 200 + 0.5) * w;
+  const py = (-coord[1] / 200 + 0.5) * h;
+
+  ctx.fillStyle = '#ef4444';
+  ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
+}
+
+function drawHeatmapCanvas(canvas, socCapPct, authLibPct) {
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  // Compass background
+  ctx.fillStyle = '#f1f5f9'; ctx.fillRect(0, 0, w, h);
+  ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
+
+  // Labels
+  ctx.fillStyle = '#475569'; ctx.font = '12px "Noto Sans Thai"';
+  ctx.textAlign = 'left'; ctx.fillText('สังคมนิยม', 8, h/2 - 6);
+  ctx.textAlign = 'right'; ctx.fillText('ทุนนิยม', w - 8, h/2 - 6);
+  ctx.textAlign = 'center'; ctx.fillText('อำนาจนิยม', w/2, 16);
+  ctx.fillText('เสรีภาพนิยม', w/2, h - 8);
+
+  // Plot 24 Ideology profiles
+  DATA.ideologies.forEach(ideo => {
+    const ix = (ideo.profile.soc_cap / 100) * w;
+    const iy = (ideo.profile.auth_lib / 100) * h;
+
+    ctx.fillStyle = '#64748b';
+    ctx.beginPath(); ctx.arc(ix, iy, 4, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = '#334155'; ctx.font = '10px "Noto Sans Thai"'; ctx.textAlign = 'center';
+    ctx.fillText(ideo.name_th, ix, iy - 6);
+  });
+
+  // User position & Heat aura
+  const ux = (socCapPct / 100) * w;
+  const uy = (authLibPct / 100) * h;
+
+  // Draw Heat Aura
+  const auraRadius = 80;
+  const gradient = ctx.createRadialGradient(ux, uy, 0, ux, uy, auraRadius);
+  gradient.addColorStop(0, 'rgba(239, 68, 68, 0.7)');
+  gradient.addColorStop(0.5, 'rgba(239, 68, 68, 0.3)');
+  gradient.addColorStop(1, 'rgba(239, 68, 68, 0)');
+  ctx.fillStyle = gradient;
+  ctx.beginPath(); ctx.arc(ux, uy, auraRadius, 0, Math.PI * 2); ctx.fill();
+
+  // User point
+  ctx.fillStyle = '#b91c1c';
+  ctx.beginPath(); ctx.arc(ux, uy, 7, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2.5; ctx.stroke();
+}
+
+// Share Link
+document.getElementById('share-btn').onclick = () => {
+  const hash = encodeAnswers(answers);
+  const shareUrl = `${window.location.origin}${window.location.pathname}#d=${hash}`;
+  navigator.clipboard.writeText(shareUrl).then(() => {
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block';
+    setTimeout(() => toast.style.display = 'none', 2500);
+  });
+};
+
+document.getElementById('print-btn').onclick = () => window.print();
+
+document.getElementById('retake-btn').onclick = () => {
+  localStorage.removeItem('pcs_draft_v2');
+  window.location.hash = '';
+  answers = {};
+  currentIdx = 0;
+  showView(questionView);
+  updateQuestionUI();
+};
+
+// App Initialization
+window.onload = () => {
+  // Check Hash for Shared Result
+  const hash = window.location.hash;
+  if (hash && hash.startsWith('#d=')) {
+    const encoded = hash.replace('#d=', '');
+    const decodedAnswers = decodeAnswers(encoded);
+    if (decodedAnswers) {
+      answers = decodedAnswers;
+      finishSurvey();
+      return;
+    }
+  }
+
+  // Check Draft
+  const draft = localStorage.getItem('pcs_draft_v2');
+  if (draft) {
+    document.getElementById('resume-btn').style.display = 'block';
+  }
+};
+</script>
+
+</body>
+</html>
